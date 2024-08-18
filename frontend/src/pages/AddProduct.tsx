@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { uploadPictures } from "../api-client"; // Ensure this path is correct based on your project structure
-import { addProduct } from "../api-client"; // Add the function for adding product
+import { uploadPictures } from "../api-client";
+import { addProduct } from "../api-client";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 const AdminAddProduct: React.FC = () => {
     const [title, setTitle] = useState("");
@@ -16,6 +17,19 @@ const AdminAddProduct: React.FC = () => {
     const [adminRating, setAdminRating] = useState<number | "">("");
     const [prioritizeAdminRating, setPrioritizeAdminRating] = useState(true);
     const [images, setImages] = useState<FileList | null>(null);
+    const [hoveredRating, setHoveredRating] = useState<number>(0);
+
+    const handleStarClick = (rating: number) => {
+        setAdminRating(rating);
+    };
+
+    const handleStarHover = (rating: number) => {
+        setHoveredRating(rating);
+    };
+
+    const handleStarLeave = () => {
+        setHoveredRating(0);
+    };
 
     const handleAddHighlight = () => setHighlights([...highlights, ""]);
     const handleRemoveHighlight = (index: number) =>
@@ -50,7 +64,7 @@ const AdminAddProduct: React.FC = () => {
                 prioritizeAdminRating,
                 imageUrl: imageUrls,
             };
-            console.log(productData)
+            console.log(productData);
             await addProduct(productData);
             alert("Product added successfully!");
         } catch (error) {
@@ -253,12 +267,28 @@ const AdminAddProduct: React.FC = () => {
                     <label className="block text-gray-700 text-sm font-bold mb-2">
                         Admin Rating
                     </label>
-                    <input
-                        type="number"
-                        value={adminRating}
-                        onChange={(e) => setAdminRating(e.target.valueAsNumber || "")}
-                        className="w-full p-2 border rounded-md"
-                    />
+                    <div className="flex items-center">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <div
+                                key={star}
+                                onClick={() => handleStarClick(star)}
+                                onMouseEnter={() => handleStarHover(star)}
+                                onMouseLeave={handleStarLeave}
+                                className="cursor-pointer"
+                            >
+                                {hoveredRating >= star || (typeof adminRating === "number" && adminRating >= star) ? (
+                                    <FaStar className="text-yellow-400" />
+                                ) : (
+                                    <FaRegStar className="text-gray-300" />
+                                )}
+                            </div>
+                        ))}
+                        {typeof adminRating === "number" && (
+                            <span className="ml-4 text-gray-700 text-sm">
+                                {adminRating.toFixed(1)}
+                            </span>
+                        )}
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2">

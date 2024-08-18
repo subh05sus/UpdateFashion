@@ -9,7 +9,7 @@ const Header = () => {
 
   return (<>
     <header className="pb-6 bg-white lg:pb-0">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 ">
+      <div className="px-4 mx-auto sm:px-6 lg:px-8 ">
         <nav className="flex items-center justify-between h-16 lg:h-20 bg-white border-b border-gray-200">
           <div className="flex-shrink-0">
             <Link to="/" title="" className="flex items-center">
