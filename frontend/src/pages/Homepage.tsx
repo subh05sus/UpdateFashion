@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { getBanners } from "../api-client";
 import BannerCarousel from "../components/BannerCarousel";
+import ProductCarousel from "../components/ProductCarousel";
 
 const HomePage: React.FC = () => {
   const [banners, setBanners] = useState<any[]>([]);
@@ -22,6 +23,7 @@ const HomePage: React.FC = () => {
   return (
     <div>
       <BannerCarousel banners={banners} />
+    <ProductCarousel/>
     </div>
   );
 };

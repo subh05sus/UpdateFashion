@@ -332,3 +332,44 @@ export const deleteBanner = async (id: string) => {
 
   return response.json();
 };
+
+
+
+
+// -------------------------------homepage
+
+// Function to get featured products
+export const getFeaturedProducts = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/products/featured`,{
+    method:'GET',
+    credentials:'include'
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch featured products");
+  }
+  return response.json();
+};
+
+// Function to get 5 footwear products
+export const getFootwearProducts = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/products/sneakers-home`,{
+    method:'GET',
+    credentials:'include'
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch footwear products");
+  }
+  return response.json();
+};
+
+// Function to get 5 jerseys
+export const getJerseys = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/products/jerseys-home`,{
+    method:'GET',
+    credentials:'include'
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch jerseys");
+  }
+  return response.json();
+};
