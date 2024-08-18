@@ -12,12 +12,13 @@ import AdminAddProduct from "./pages/AddProduct";
 import AdminProductList from "./pages/AdminProductList";
 import AdminEditProduct from "./pages/AdminEditProduct";
 import AdminBannersPage from "./pages/AdminBannersPage";
+import HomePage from "./pages/Homepage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout>Home Page</Layout>} />
+        <Route path="/" element={<Layout><HomePage/></Layout>} />
         <Route path="/register" element={<Layout><Register/></Layout>} />
         <Route path="/sign-in" element={<Layout><SignIn/></Layout>} />
 

@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import PopupMenu from "./PopupMenu";
 import { BsCart } from "react-icons/bs";
-import { BiSearch } from "react-icons/bi";
 
 const Header = () => {
   const { isLoggedIn } = useAppContext();
@@ -41,14 +40,7 @@ const Header = () => {
       </div >
     </header >
 
-    <div className=" mx-4 flex lg:mx-8 lg:hidden items-center rounded-md bg-slate-100">
-      <BiSearch className="text-2xl ml-2" />
-      <input
-        type="text"
-        placeholder="Search products..."
-        className="w-full p-2 text-base rounded-md bg-transparent focus:outline-none focus:ring-0 focus:border-0 "
-      />
-    </div>
+
 
 
   </>
