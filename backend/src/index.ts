@@ -11,6 +11,7 @@ import authRoutes from './routes/auth'
 import uploadRoutes from "./routes/upload";
 import products from "./routes/products";
 import reviews from "./routes/reviews";
+import banners from "./routes/banners";
 
 
 
@@ -44,6 +45,7 @@ app.use("/api/users", userRoutes)
 app.use("/api/upload", uploadRoutes);
 app.use("/api/products", products);
 app.use("/api/reviews", reviews);
+app.use("/api/banners", banners);
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));

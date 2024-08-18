@@ -11,6 +11,7 @@ import AdminPanel from "./pages/AdminPanel";
 import AdminAddProduct from "./pages/AddProduct";
 import AdminProductList from "./pages/AdminProductList";
 import AdminEditProduct from "./pages/AdminEditProduct";
+import AdminBannersPage from "./pages/AdminBannersPage";
 
 function App() {
   return (
@@ -19,10 +20,13 @@ function App() {
         <Route path="/" element={<Layout>Home Page</Layout>} />
         <Route path="/register" element={<Layout><Register/></Layout>} />
         <Route path="/sign-in" element={<Layout><SignIn/></Layout>} />
+
         <Route path="/admin" element={<Layout><AdminPanel/></Layout>} />
         <Route path="/admin/add-product" element={<Layout><AdminAddProduct/></Layout>} />
         <Route path="/admin/edit-product/:id" element={<Layout><AdminEditProduct/></Layout>} />
         <Route path="/admin/all-products" element={<Layout><AdminProductList/></Layout>} />
+        <Route path="/admin/manage-banners" element={<Layout><AdminBannersPage/></Layout>} />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
