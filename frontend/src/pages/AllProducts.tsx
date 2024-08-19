@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getProductsBySubCategory } from '../api-client';
+import { getAllProducts } from '../api-client';
 import ProductCard from '../components/ProductCard';
 
-export default function SubCategoryPage() {
-    const { subcategory } = useParams<{ subcategory: string }>(); // Get the subcategory from the URL
+export default function AllProductsPage() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -13,7 +11,7 @@ export default function SubCategoryPage() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const fetchedProducts = await getProductsBySubCategory(subcategory!);
+                const fetchedProducts = await getAllProducts();
                 setProducts(fetchedProducts);
             } catch (err) {
                 setError("Failed to fetch products by subcategory");
@@ -23,7 +21,7 @@ export default function SubCategoryPage() {
         };
 
         fetchProducts();
-    }, [subcategory]);
+    }, []);
 
     if (loading) {
         return <div className="text-center">Loading...</div>;
@@ -35,7 +33,7 @@ export default function SubCategoryPage() {
 
     return (
         <div className="max-w-5xl mx-auto p-4">
-            <h1 className="text-3xl font-bold text-center mb-8 capitalize">{subcategory} Products</h1>
+            <h1 className="text-3xl font-bold text-center mb-8 capitalize">All Products</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {products.map((product: any) => (
                     <ProductCard
