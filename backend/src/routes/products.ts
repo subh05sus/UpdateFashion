@@ -98,7 +98,7 @@ router.get("/sneakers-home", async (req, res) => {
   try {
     const footwearProducts = await Product.find({
       subCategory: "sneakers",
-    }).limit(5);
+    }).limit(4);
 
     res.json(footwearProducts);
   } catch (error) {
@@ -110,7 +110,7 @@ router.get("/sneakers-home", async (req, res) => {
 
 router.get("/jerseys-home", async (req, res) => {
   try {
-    const jerseys = await Product.find({ subCategory: "jersey" }).limit(5);
+    const jerseys = await Product.find({ subCategory: "jersey" }).limit(4);
     res.json(jerseys);
   } catch (error) {
     res.status(500).json({ message: "Error fetching jerseys", error });
