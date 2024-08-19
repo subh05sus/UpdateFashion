@@ -40,6 +40,7 @@ export default function SubCategoryPage() {
                 {products.map((product: any) => (
                     <ProductCard
                         key={product._id}
+                        link={`/product/${product._id}`}
                         imageUrl={product.imageUrl.split(',')[0]}
                         title={product.title}
                         shortDescription={product.shortDescription}

@@ -27,11 +27,11 @@ export function CategoryTabs() {
             <div className="w-full overflow-scroll no-visible-scrollbar relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-slate-700 to-orange-950 flex flex-col items-center gap-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
                     {products.map((product: any) => (
-                        <div key={product._id} className="bg-slate-200 shadow-md rounded-xl p-4 w-full">
-                            <img src={product.imageUrl} alt={product.title} className="w-full h-40 object-cover rounded-lg" />
+                        <Link key={product._id} className="bg-slate-200 shadow-md rounded-xl p-4 w-full" to={`/product/${product._id}`}>
+                            <img src={product.imageUrl.split(',')[0]} alt={product.title} className="w-full h-40 object-cover rounded-lg" />
                             <h3 className="mt-2 text-lg poppins-semibold text-[#222]">{product.title}</h3>
                             <p className="mt-1 text-xs poppins text-gray-600">{product.shortDescription}</p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 <Link to={link} className='px-6 py-2 border border-2 border-orange-600 rounded-full hover:bg-orange-600 text-orange-600 poppins-semibold hover:text-white duration-300 text-lg transition-all w-fit landscape:mt-6'>View More</Link>

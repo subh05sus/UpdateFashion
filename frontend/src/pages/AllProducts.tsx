@@ -43,7 +43,7 @@ export default function AllProductsPage() {
                         shortDescription={product.shortDescription}
                         price={product.price}
                         isSpecialPrice={product.isSpecialPrice}
-                        adminRating={product.adminRating} category={product.category}/>))}
+                        adminRating={product.adminRating} category={product.category} link={`/product/${product._id}`}/>))}
             </div>
         </div>
     );

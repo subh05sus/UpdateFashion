@@ -7,6 +7,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { PiSneaker } from "react-icons/pi";
 import { TbShirtSport } from "react-icons/tb";
 import { HeroText } from "./HeroText";
+import { Link } from "react-router-dom";
 const ProductCarousel: React.FC = () => {
   const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [footwearProducts, setFootwearProducts] = useState<any[]>([]);
@@ -48,11 +49,11 @@ const ProductCarousel: React.FC = () => {
   };
 
   const ProductCard = ({ product }: { product: any }) => (
-    <div className="flex-shrink-0 w-52 bg-slate-100 p-4 rounded-md border hover:bg-white  hover:shadow-xl">
+    <Link className="flex-shrink-0 w-52 bg-slate-100 p-4 rounded-md border hover:bg-white  hover:shadow-xl" to={`/product/${product._id}`}>
       <img src={product.imageUrl.split(',')[0]} alt={product.title} className="w-full h-32 object-cover mb-2" />
       <h3 className="font-semibold">{product.title}</h3>
       <p className="text-xs text-gray-600">{product.shortDescription}</p>
-    </div>
+    </Link>
   );
 
   return (

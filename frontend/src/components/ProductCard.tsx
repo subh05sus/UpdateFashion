@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {Link} from 'react-router-dom';
 interface ProductCardProps {
   imageUrl: string;
   title: string;
@@ -13,6 +13,7 @@ interface ProductCardProps {
   adminRating?: number;
   prioritizeAdminRating?: boolean;
   reviews?: string[];
+  link?:string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -22,7 +23,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   isSpecialPrice,
   adminRating,
-  category
+  category,
+  link
 }) => {
     const renderStars = (rating: number) => {
         const totalStars = 5;
@@ -43,9 +45,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
 
   return (
-    <div className="bg-gray-100 hover:bg-white hover:shadow-xl shadow-md rounded-xl border p-4 poppins-medium relative">
+    <Link className="bg-gray-100 hover:bg-white hover:shadow-xl shadow-md rounded-xl border p-4 poppins-medium relative" to={link!}>
       <img src={imageUrl} alt={title} className="w-full h-40 object-cover rounded-lg "/>
-      <span className='rounded-full px-1.5 py-0.5 bg-yellow-100 text-yellow-800 text-xs absolute top-5 left-5'>{category || 'meow'}</span>
+      <span className='rounded-full px-1.5 py-0.5 bg-yellow-100 text-yellow-800 text-xs absolute top-5 left-5'>{category}</span>
       <h3 className="mt-2 text-xl font-semibold text-[#222]">{title}</h3>
       <p className="mt-0 text-sm text-gray-600">{shortDescription}</p>
       <div className="mt-2 flex justify-between items-center">
@@ -57,7 +59,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {isSpecialPrice && <span className='rounded-full px-1.5 py-0.5 bg-green-300 text-green-800 text-xs'>Special Price</span>}
           {adminRating !== undefined && renderStars(adminRating)}
 
-    </div>
+    </Link>
   );
 };
 

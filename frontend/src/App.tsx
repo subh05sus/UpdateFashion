@@ -15,6 +15,7 @@ import AdminBannersPage from "./pages/AdminBannersPage";
 import HomePage from "./pages/Homepage";
 import SubCategoryPage from "./pages/SubCategoryPage";
 import AllProductsPage from "./pages/AllProducts";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
 
         <Route path="/sub-category/:subcategory" element={<Layout><SubCategoryPage/></Layout>} />
         <Route path="/all-products" element={<Layout><AllProductsPage/></Layout>} />
+        <Route path="/product/:id" element={<Layout><ProductDetails/></Layout>} />
 
         
 
