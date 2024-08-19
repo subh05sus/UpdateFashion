@@ -117,6 +117,64 @@ router.get("/jerseys-home", async (req, res) => {
   }
 });
 
+// Route to get 3 products from Men Clothing category
+router.get("/men", async (req, res) => {
+  try {
+    const menProducts = await Product.find({ subCategory: "men" }).limit(3);
+    res.json(menProducts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching men clothing products", error });
+  }
+});
+
+// Route to get 3 products from Women Clothing subCategory
+router.get("/women", async (req, res) => {
+  try {
+    const womenProducts = await Product.find({ subCategory: "women" }).limit(3);
+    res.json(womenProducts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching women clothing products", error });
+  }
+});
+
+// Route to get 3 products from Casual Footwear subCategory
+router.get("/casual", async (req, res) => {
+  try {
+    const casualProducts = await Product.find({ subCategory: "casual" }).limit(3);
+    res.json(casualProducts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching casual footwear products", error });
+  }
+});
+
+// Route to get 3 products from Formal Clothing subCategory
+router.get("/formal", async (req, res) => {
+  try {
+    const formalProducts = await Product.find({ subCategory: "formal" }).limit(3);
+    res.json(formalProducts);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching formal clothing products", error });
+  }
+});
+
+// Route to get 3 random products
+router.get("/random", async (req, res) => {
+  try {
+    const randomProducts = await Product.aggregate([{ $sample: { size: 3 } }]);
+    res.json(randomProducts);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching random products", error });
+  }
+});
+
 // Get a specific product
 router.get("/:id", async (req: Request, res: Response) => {
   try {

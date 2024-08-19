@@ -333,16 +333,13 @@ export const deleteBanner = async (id: string) => {
   return response.json();
 };
 
-
-
-
 // -------------------------------homepage
 
 // Function to get featured products
 export const getFeaturedProducts = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/products/featured`,{
-    method:'GET',
-    credentials:'include'
+  const response = await fetch(`${API_BASE_URL}/api/products/featured`, {
+    method: "GET",
+    credentials: "include",
   });
   if (!response.ok) {
     throw new Error("Failed to fetch featured products");
@@ -352,9 +349,9 @@ export const getFeaturedProducts = async () => {
 
 // Function to get 5 footwear products
 export const getFootwearProducts = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/products/sneakers-home`,{
-    method:'GET',
-    credentials:'include'
+  const response = await fetch(`${API_BASE_URL}/api/products/sneakers-home`, {
+    method: "GET",
+    credentials: "include",
   });
   if (!response.ok) {
     throw new Error("Failed to fetch footwear products");
@@ -364,12 +361,77 @@ export const getFootwearProducts = async () => {
 
 // Function to get 5 jerseys
 export const getJerseys = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/products/jerseys-home`,{
-    method:'GET',
-    credentials:'include'
+  const response = await fetch(`${API_BASE_URL}/api/products/jerseys-home`, {
+    method: "GET",
+    credentials: "include",
   });
   if (!response.ok) {
     throw new Error("Failed to fetch jerseys");
   }
   return response.json();
+};
+
+export const getMenProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/products/men`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch jerseys");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching men clothing products:", error);
+    throw error;
+  }
+};
+
+export const getWomenProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/products/women`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch jerseys");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching women clothing products:", error);
+    throw error;
+  }
+};
+
+export const getCasualFootwearProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/products/casual`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch jerseys");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching casual footwear products:", error);
+    throw error;
+  }
+};
+
+export const getFormalClothingProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/products/formal`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch jerseys");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching formal clothing products:", error);
+    throw error;
+  }
+};
+
+export const getRandomProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/products/random`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch jerseys");
+    }
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching random products:", error);
+    throw error;
+  }
 };
