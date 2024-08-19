@@ -1,5 +1,10 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+export interface SizeOption {
+  size: string;
+  quantityAvailable: number;
+}
+
 export interface ProductType extends Document {
   imageUrl: string;
   title: string;
@@ -15,6 +20,7 @@ export interface ProductType extends Document {
   adminRating: number;
   prioritizeAdminRating: boolean;
   reviews: mongoose.Types.ObjectId[]; // Reference to the Review model
+  sizeOptions: SizeOption[]; // Updated field for size options and their quantity
 }
 
 const productSchema: Schema<ProductType> = new mongoose.Schema({
@@ -32,6 +38,12 @@ const productSchema: Schema<ProductType> = new mongoose.Schema({
   adminRating: { type: Number },
   prioritizeAdminRating: { type: Boolean, default: true },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  sizeOptions: [
+    {
+      size: { type: String, required: true },
+      quantityAvailable: { type: Number, required: true, default: 0 },
+    },
+  ], // Updated schema for size and availability
 });
 
 const Product = mongoose.model<ProductType>("Product", productSchema);

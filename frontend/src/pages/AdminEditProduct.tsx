@@ -1,28 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductById, editProduct, uploadPicture } from "../api-client";
 
 // Define the types for the state
 interface Spec {
-    key: string;
-    value: string;
-  }
-  
-  interface Product {
-    imageUrl: string;
-    title: string;
-    shortDescription: string;
-    longDescription: string;
-    price: number;
-    category: "footwear" | "clothing";
-    subCategory: string | string[];
-    isSpecialPrice: boolean;
-    isFeatured: boolean;
-    highlights: string[];
-    specs: Spec[];
-    adminRating: number;
-    prioritizeAdminRating: boolean;
-  }
+  key: string;
+  value: string;
+}
+
+interface Product {
+  imageUrl: string;
+  title: string;
+  shortDescription: string;
+  longDescription: string;
+  price: number;
+  category: "footwear" | "clothing";
+  subCategory: string | string[];
+  isSpecialPrice: boolean;
+  isFeatured: boolean;
+  highlights: string[];
+  specs: Spec[];
+  adminRating: number;
+  prioritizeAdminRating: boolean;
+  sizeOptions: any[],  // Add this line
+
+}
 
 
 const AdminEditProduct = () => {
@@ -42,7 +45,10 @@ const AdminEditProduct = () => {
     specs: [],
     adminRating: 0,
     prioritizeAdminRating: true,
+    sizeOptions: [],  // Add this line
+
   });
+  const [sizeOptions, setSizeOptions] = useState<{ size: string; quantityAvailable: number }[]>([]);
 
   const [newImage, setNewImage] = useState<File | null>(null);
   const navigate = useNavigate()
@@ -52,6 +58,8 @@ const AdminEditProduct = () => {
       try {
         const data = await getProductById(id!);
         setProduct(data);
+        setSizeOptions(data.sizeOptions || []); // Add this line
+
       } catch (error) {
         console.error("Error fetching product:", error);
       }
@@ -85,6 +93,18 @@ const AdminEditProduct = () => {
       setNewImage(e.target.files[0]);
     }
   };
+  const handleSizeChange = (index: number, key: string, value: string) => {
+    const newSizeOptions = [...sizeOptions];
+    newSizeOptions[index] = { ...newSizeOptions[index], [key]: value };
+    setSizeOptions(newSizeOptions);
+  };
+
+  const handleQuantityChange = (index: number, quantity: number) => {
+    const newSizeOptions = [...sizeOptions];
+    newSizeOptions[index].quantityAvailable = quantity;
+    setSizeOptions(newSizeOptions);
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,7 +115,7 @@ const AdminEditProduct = () => {
         imageUrl = await uploadPicture(newImage);
       }
 
-      const updatedProduct = { ...product, imageUrl };
+      const updatedProduct = { ...product, imageUrl, sizeOptions };
       await editProduct(id!, updatedProduct);
       navigate("/admin/products");
     } catch (error) {
@@ -248,6 +268,35 @@ const AdminEditProduct = () => {
             </div>
           ))}
         </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Size Options</label>
+          {sizeOptions.map((sizeOption, index) => (
+            <div key={index} className="flex items-center mb-2">
+              <input
+                type="text"
+                value={sizeOption.size}
+                onChange={(e) => handleSizeChange(index, 'size', e.target.value)}
+                className="mt-1 p-2 border rounded-md w-1/2"
+                placeholder="Size"
+              />
+              <input
+                type="number"
+                value={sizeOption.quantityAvailable}
+                onChange={(e) => handleQuantityChange(index, Number(e.target.value))}
+                className="mt-1 p-2 border rounded-md w-1/2 ml-2"
+                placeholder="Quantity Available"
+              />
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => setSizeOptions([...sizeOptions, { size: "", quantityAvailable: 0 }])}
+            className="bg-green-500 text-white p-2 rounded-md"
+          >
+            Add Size Option
+          </button>
+        </div>
+
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Product Image</label>
           <input
