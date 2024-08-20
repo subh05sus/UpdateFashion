@@ -12,6 +12,7 @@ import uploadRoutes from "./routes/upload";
 import products from "./routes/products";
 import reviews from "./routes/reviews";
 import banners from "./routes/banners";
+import orders from "./routes/orders";
 
 
 
@@ -46,6 +47,9 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/products", products);
 app.use("/api/reviews", reviews);
 app.use("/api/banners", banners);
+app.use('/api/orders', orders);
+
+
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));

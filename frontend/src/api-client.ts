@@ -435,3 +435,79 @@ export const getRandomProducts = async () => {
     throw error;
   }
 };
+
+
+
+// -------------------------------------- orders
+export const createOrder = async (orderData:any) => {
+  const response = await fetch(`${API_BASE_URL}/api/orders/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',  // if you need to send cookies with the request
+    body: JSON.stringify(orderData),
+  });
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseBody.message || 'Failed to create order');
+  }
+
+  return responseBody;
+};
+
+
+
+export const updateOrderStatus = async (orderId:any, orderStatus:any) => {
+  const response = await fetch(`${API_BASE_URL}/api/orders/update-status/${orderId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',  // if you need to send cookies with the request
+    body: JSON.stringify({ orderStatus }),
+  });
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseBody.message || 'Failed to update order status');
+  }
+
+  return responseBody;
+};
+
+
+
+export const getAllOrders = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/orders/all`, {
+    credentials: 'include',  // if you need to send cookies with the request
+  });
+
+  const orders = await response.json();
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch orders');
+  }
+
+  return orders;
+};
+
+
+
+
+export const getOrderById = async (orderId:any) => {
+  const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
+    credentials: 'include',  // if you need to send cookies with the request
+  });
+
+  const order = await response.json();
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch order');
+  }
+
+  return order;
+};
