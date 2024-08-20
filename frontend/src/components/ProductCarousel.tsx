@@ -29,7 +29,7 @@ const ProductCarousel: React.FC = () => {
 
     fetchProducts();
   }, []);
-
+ 
   const LeftArrow = () => {
     const { scrollPrev } = React.useContext(VisibilityContext);
     return (

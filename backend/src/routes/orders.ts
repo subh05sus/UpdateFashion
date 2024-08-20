@@ -80,7 +80,7 @@ router.put("/update-status/:orderId", async (req, res) => {
 
 router.get("/all", async (req, res) => {
   try {
-    const orders = await Order.find().populate("product user").exec();
+    const orders = await Order.find().populate("productId userId").exec();
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ message: "Error fetching orders", error });
@@ -107,7 +107,6 @@ router.get("/get-my-orders", verifyToken, async (req, res) => {
 router.get("/:orderId", async (req, res) => {
   try {
     const { orderId } = req.params;
-    console.log(orderId)
     const order = await Order.findById(orderId).populate("productId userId").exec();
     if (!order) {
       return res.status(404).json({ message: "Order not found" });

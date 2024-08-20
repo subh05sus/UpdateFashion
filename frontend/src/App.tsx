@@ -18,6 +18,7 @@ import AllProductsPage from "./pages/AllProducts";
 import ProductDetails from "./pages/ProductDetails";
 import MyOrdersPage from "./pages/MyOrdersPage";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="/admin/edit-product/:id" element={<Layout><AdminEditProduct/></Layout>} />
         <Route path="/admin/all-products" element={<Layout><AdminProductList/></Layout>} />
         <Route path="/admin/manage-banners" element={<Layout><AdminBannersPage/></Layout>} />
+        <Route path="/admin/manage-orders" element={<Layout><AdminOrdersPage/></Layout>} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

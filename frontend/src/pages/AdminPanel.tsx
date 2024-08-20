@@ -8,7 +8,7 @@ function AdminPanel() {
             <Link to='/admin/add-product/' className=" px-4 py-2 rounded bg-orange-800 text-white font-medium hover:bg-slate-900">Add Product</Link>
             <Link to='/admin/all-products' className=" px-4 py-2 rounded bg-orange-800 text-white font-medium hover:bg-slate-900">View All Products</Link>
             <Link to='/admin/manage-banners' className=" px-4 py-2 rounded bg-orange-800 text-white font-medium hover:bg-slate-900">Update Featured Banners</Link>
-            <Link to='#' className=" px-4 py-2 rounded bg-orange-800 text-white font-medium hover:bg-slate-900">View All Reviews</Link>
+            <Link to='/admin/manage-orders' className=" px-4 py-2 rounded bg-orange-800 text-white font-medium hover:bg-slate-900">View Orders</Link>
         </div>
     </div>
   )

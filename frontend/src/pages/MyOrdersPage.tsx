@@ -58,7 +58,8 @@ const MyOrdersPage = () => {
                         </div>
                         </div>
                         <div className='flex flex-col items-end'>
-                        <p className={`text-sm font-medium ${order.orderStatus === 'DELIVERED' ? 'text-green-600' : 'text-orange-600'}`}>
+                                            <p className={`text-sm font-medium ${order.orderStatus === 'DELIVERED' ? 'text-green-600' : `${order.orderStatus === 'CANCELED' ? 'text-red-600' : 'text-yellow-600'}`}`}>
+
                                 <FaCalendarDay className="inline mr-1" /> {order.orderStatus}
                             </p>
                         <img src={order.productId.imageUrl.split(',')[0]} className='h-24  w-24 object-cover object-center rounded-lg' alt=''/>
