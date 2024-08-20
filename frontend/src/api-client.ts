@@ -201,7 +201,7 @@ export const getProductsBySubCategory = async (subcategory: string) => {
     throw new Error("Failed to fetch products by subcategory");
   }
   return products;
-};
+}; 
 
 // --------------------------------------------------------- reviews
 

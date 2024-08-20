@@ -4,9 +4,9 @@ import Product from "../models/product";
 import verifyToken from "../middleware/auth";
 
 const router = express.Router();
-
+ 
 // Add a new review
-router.post("/add", verifyToken, async (req: Request, res: Response) => {
+router.post("/add",  async (req: Request, res: Response) => {
   try {
     const { productId, rating, title, description } = req.body;
     const product = await Product.findById(productId);

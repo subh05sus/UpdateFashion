@@ -80,7 +80,7 @@ const ProductCarousel: React.FC = () => {
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
-              <button className="px-6 py-2 border border-2 border-orange-600 rounded-full hover:bg-orange-600 text-orange-600 poppins-semibold hover:text-white duration-300 transition-all w-fit">View More</button>
+              <Link to={`/sub-category/sneakers`} className="px-6 py-2 border border-2 border-orange-600 rounded-full hover:bg-orange-600 text-orange-600 poppins-semibold hover:text-white duration-300 transition-all w-fit">View More</Link>
         </div>
         <div className="flex flex-col justify-between gap-4 items-center">
 
@@ -90,7 +90,7 @@ const ProductCarousel: React.FC = () => {
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
-          <button className="px-6 py-2 border border-2 border-orange-600 rounded-full hover:bg-orange-600 text-orange-600 poppins-semibold hover:text-white duration-300 transition-all w-fit">View More</button>
+          <Link to={`/sub-category/jerseys`} className="px-6 py-2 border border-2 border-orange-600 rounded-full hover:bg-orange-600 text-orange-600 poppins-semibold hover:text-white duration-300 transition-all w-fit">View More</Link>
         </div>
 
       </div>

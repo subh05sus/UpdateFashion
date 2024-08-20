@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById } from '../api-client';
+import { getProductById, getReviewsByProductId, addReview } from '../api-client';
 import { FaStar } from 'react-icons/fa';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -17,7 +17,14 @@ interface SizeOption {
   quantityAvailable: number;
 }
 
+interface Review {
+  rating: number;
+  title: string;
+  description: string;
+}
+
 interface Product {
+  _id: string;
   imageUrl: string;
   title: string;
   shortDescription: string;
@@ -38,12 +45,29 @@ const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [newReview, setNewReview] = useState<Review>({
+    rating: 0,
+    title: '',
+    description: ''
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getProductById(id!);
-        setProduct(data);
+        const productData = await getProductById(id!);
+        setProduct(productData);
+
+        const reviewsData = await getReviewsByProductId(id!);
+        setReviews(reviewsData);
+
+        if (reviewsData.length > 0) {
+          const avgRating = reviewsData.reduce((acc: number, review: Review) => acc + review.rating, 0) / reviewsData.length;
+          setAverageRating(avgRating);
+          console.log('Average Rating:', avgRating);
+        }
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -52,13 +76,6 @@ const ProductDetails: React.FC = () => {
     fetchData();
   }, [id]);
 
-  if (!product) {
-    return <div>Loading...</div>;
-  }
-
-  const handleSizeSelection = (size: string) => {
-    setSelectedSize(size);
-  };
 
   const handleBuyNow = () => {
     if (selectedSize) {
@@ -77,6 +94,26 @@ const ProductDetails: React.FC = () => {
       alert("Please select a size first.");
     }
   };
+
+  const handleAddReview = async () => {
+    if (product) {
+      try {
+        const reviewData = { ...newReview, productId: product._id };
+        console.log(reviewData)
+        await addReview(reviewData);
+        // Refresh the reviews after adding a new one
+        const reviewsData = await getReviewsByProductId(product._id);
+        setReviews(reviewsData);
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error adding review:", error);
+      }
+    }
+  };
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
 
   const settings = {
     dots: true,
@@ -99,18 +136,32 @@ const ProductDetails: React.FC = () => {
         <div className="lg:w-1/2 lg:pl-6">
           <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
           <p className="text-sm text-gray-600 mb-2">{product.shortDescription}</p>
-          <div className="flex items-center my-2">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <FaStar
-                key={index}
-                className={`h-5 w-5 ${index < (product.adminRating || 0) ? 'text-yellow-500' : 'text-gray-300'}`}
-              />
-            ))}
-          </div>
+          {product.prioritizeAdminRating ?
+            <div className="flex items-center my-2">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <FaStar
+                  key={index}
+                  className={`h-5 w-5 ${index < (product.adminRating || 0) ? 'text-yellow-500' : 'text-gray-300'}`}
+                />
+              ))}
+              <span className="ml-2 text-gray-600">{product.adminRating ? product.adminRating.toFixed(1) : 'No ratings yet'}</span>
+            </div>
 
+
+            :
+            <div className="flex items-center my-2">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <FaStar
+                  key={index}
+                  className={`h-5 w-5 ${index < (averageRating || 0) ? 'text-yellow-500' : 'text-gray-300'}`}
+                />
+              ))}
+              <span className="ml-2 text-gray-600">{averageRating ? averageRating.toFixed(1) : 'No ratings yet'}</span>
+            </div>
+          }
           <Slider {...settings} className="w-full mb-6 landscape:hidden">
             {product.imageUrl.split(',').map((imageUrl, index) => (
-              <img key={index} src={imageUrl} alt={product.title} className="w-full h-96 object-cover rounded-lg border " />
+              <img key={index} src={imageUrl} alt={product.title} className="w-full h-96 object-cover rounded-lg border" />
             ))}
           </Slider>
 
@@ -121,13 +172,18 @@ const ProductDetails: React.FC = () => {
             <div className="mb-4">
               <div className="flex gap-3 flex-wrap">
                 {product.sizeOptions.map((sizeOption, index) => (
-                  <div className='flex flex-col text-center justify-start items-center gap-2' key={index}>
+                  <div key={index} className='flex flex-col text-center justify-start items-center gap-2'>
                     <div
-                      onClick={() => sizeOption.quantityAvailable !== 0 && handleSizeSelection(sizeOption.size)}
-                      className={`text-sm w-12 h-12 rounded-full border border-2 ${sizeOption.quantityAvailable !== 0 ? `cursor-pointer text-gray-700 hover:bg-gray-200` : `cursor-not-allowed text-gray-500`} ${selectedSize === sizeOption.size ? 'bg-gray-300' : ''} relative flex items-center text-center justify-center`}>
+                      onClick={() => sizeOption.quantityAvailable !== 0 && setSelectedSize(sizeOption.size)}
+                      className={`text-sm w-12 h-12 rounded-full border border-2 ${sizeOption.quantityAvailable !== 0 ? `cursor-pointer text-gray-700 hover:bg-gray-200` : `cursor-not-allowed text-gray-500`}  relative flex items-center text-center justify-center ${selectedSize === sizeOption.size ? 'bg-gray-200' : ''}`}
+                    >
                       <span className="font-medium">{sizeOption.size}</span>
                     </div>
-                    {sizeOption.quantityAvailable < 10 && <span className={` w-full text-xs py-1 rounded ${sizeOption.quantityAvailable >= 5 ? `bg-yellow-200` : `bg-red-200`}`}>{sizeOption.quantityAvailable} left</span>}
+                    {sizeOption.quantityAvailable < 10 && (
+                      <span className={`w-full text-xs py-1 rounded ${sizeOption.quantityAvailable >= 5 ? `bg-yellow-200` : `bg-red-200`}`}>
+                        {sizeOption.quantityAvailable} left
+                      </span>
+                    )}
                   </div>
                 ))}
               </div>
@@ -135,8 +191,18 @@ const ProductDetails: React.FC = () => {
           )}
 
           <div className='flex gap-3 mb-6 mt-4'>
-            <div onClick={handleBuyNow} className='flex-1 poppins-semibold text-center bg-orange-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'>Buy Now</div>
-            <div onClick={handleAddToCart} className='duration-200 transition-all flex flex-col items-center justify-center poppins-medium text-sm bg-slate-800 text-white px-4 py-2 hover:bg-slate-900  rounded-md cursor-pointer'><BiCart className='text-2xl' />Add To Cart</div>
+            <div
+              onClick={handleBuyNow}
+              className='flex-1 poppins-semibold text-center bg-orange-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'
+            >
+              Buy Now
+            </div>
+            <div
+              onClick={handleAddToCart}
+              className='duration-200 transition-all flex flex-col items-center justify-center poppins-medium text-sm bg-slate-800 text-white px-4 py-2 hover:bg-slate-900  rounded-md cursor-pointer'
+            >
+              <BiCart className='text-2xl' />Add To Cart
+            </div>
           </div>
 
           <p className="text-base mb-4">{product.longDescription}</p>
@@ -161,6 +227,100 @@ const ProductDetails: React.FC = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="mb-4">
+            <h2 className="text-lg font-semibold">Reviews</h2>
+            {reviews.length === 0 ? (
+
+              <p className="text-sm text-gray-600">Be the first one to write a review!</p>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 gap-4">
+                  {reviews.map((review, index) => (
+                    <div key={index} className="p-4 border rounded-md shadow-sm">
+                      <div className="flex items-center mb-1">
+                        {Array.from({ length: review.rating }).map((_, i) => (
+                          <FaStar key={i} className="h-4 w-4 text-yellow-500" />
+                        ))}
+                        <span className="ml-2 text-base font-semibold text-gray-950">{review.title}</span>
+                      </div>
+                      <p className="text-xs text-gray-700">{review.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            <div className="mt-4">
+              <button
+                onClick={() => setShowModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
+              >
+                {reviews.length === 0 ? 'Write a Review' : 'Add a Review'}
+              </button>
+            </div>
+
+            {showModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-md w-96">
+              <h2 className="text-lg font-semibold mb-4">Add a Review</h2>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">Rating</label>
+                <div className="flex gap-2">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <FaStar
+                      key={i}
+                      className={`h-6 w-6 cursor-pointer ${
+                        i < newReview.rating ? 'text-yellow-500' : 'text-gray-300'
+                      }`}
+                      onClick={() => setNewReview({ ...newReview, rating: i + 1 })}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">Title</label>
+                <input
+                  type="text"
+                  value={newReview.title}
+                  maxLength={50}
+                  onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
+                  className="w-full border rounded-md px-3 py-2"
+                />
+                <p className="text-xs text-gray-500">{newReview.title.length}/50</p>
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-1">Description</label>
+                <textarea
+                  value={newReview.description}
+                  maxLength={300}
+                  onChange={(e) => setNewReview({ ...newReview, description: e.target.value })}
+                  className="w-full border rounded-md px-3 py-2"
+                ></textarea>
+                <p className="text-xs text-gray-500">{newReview.description.length}/300</p>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={handleAddReview}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
+                >
+                  Submit Review
+                </button>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="ml-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
           </div>
         </div>
       </div>
