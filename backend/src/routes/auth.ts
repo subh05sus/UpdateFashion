@@ -36,7 +36,7 @@ async (req: Request, res: Response) =>{
         expiresIn: '1d',
       }
       )
-      res.cookie("auth_token", token, {
+      res.cookie("update_fashion_auth", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 86400000,
@@ -57,7 +57,7 @@ router.get("/validate-token", verifyToken, (req: Request, res: Response) => {
 });
 
 router.post("/logout", (req: Request, res: Response) => {
-  res.cookie("auth_token", "", {
+  res.cookie("update_fashion_auth", "", {
     expires: new Date(0),
   });
   res.send();

@@ -16,6 +16,8 @@ import HomePage from "./pages/Homepage";
 import SubCategoryPage from "./pages/SubCategoryPage";
 import AllProductsPage from "./pages/AllProducts";
 import ProductDetails from "./pages/ProductDetails";
+import MyOrdersPage from "./pages/MyOrdersPage";
+import OrderDetailsPage from "./pages/OrderDetailsPage";
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="/sub-category/:subcategory" element={<Layout><SubCategoryPage/></Layout>} />
         <Route path="/all-products" element={<Layout><AllProductsPage/></Layout>} />
         <Route path="/product/:id" element={<Layout><ProductDetails/></Layout>} />
+        <Route path="/my-orders/" element={<Layout><MyOrdersPage/></Layout>} />
+        <Route path="/order-details/:id" element={<Layout><OrderDetailsPage/></Layout>} />
 
         
 

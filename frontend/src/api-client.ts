@@ -497,8 +497,24 @@ export const getAllOrders = async () => {
 
 
 
+export const getMyOrders = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/orders/get-my-orders`, {
+    credentials: 'include',  // if you need to send cookies with the request
+  });
 
-export const getOrderById = async (orderId:any) => {
+  const orders = await response.json();
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch orders');
+  }
+
+  return orders;
+};
+
+
+
+
+export const getOrderById = async (orderId:string) => {
   const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
     credentials: 'include',  // if you need to send cookies with the request
   });

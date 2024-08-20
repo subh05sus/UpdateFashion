@@ -51,10 +51,10 @@ const PopupMenu = ({ isLoggedIn }: Props) => {
               }}
             >
               <Link
-                to="/profile"
+                to="/my-orders"
                 className="block py-2 px-4 portrait:py-1 portrait:px-2 portrait:text-sm text-base font-medium poppins hover:bg-gray-100"
               >
-                Profile
+                My Orders
               </Link>
             </li>
             {isAdmin && <li

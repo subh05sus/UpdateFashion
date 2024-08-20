@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductById, getReviewsByProductId, addReview } from '../api-client';
+import { getProductById, getReviewsByProductId, addReview, createOrder } from '../api-client';
 import { FaStar } from 'react-icons/fa';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BiCart } from 'react-icons/bi';
+import { useAppContext } from '../contexts/AppContext';
 
 interface Spec {
   key: string;
@@ -54,6 +55,22 @@ const ProductDetails: React.FC = () => {
     description: ''
   });
 
+  const {userId} = useAppContext()
+
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const [showBuyNowModal, setShowBuyNowModal] = useState(false);
+  const [showAddressModal, setShowAddressModal] = useState(false);
+  const [address, setAddress] = useState({
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    pinCode: '',
+  });
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,14 +94,60 @@ const ProductDetails: React.FC = () => {
   }, [id]);
 
 
+
   const handleBuyNow = () => {
     if (selectedSize) {
       console.log("Product ID:", id);
       console.log("Selected Size:", selectedSize);
+      setShowBuyNowModal(true);
     } else {
       alert("Please select a size first.");
     }
   };
+
+  const handleContinue = () => {
+    setShowBuyNowModal(false);
+    setShowAddressModal(true);
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!product) {
+      return;
+    }
+    const orderDetails = {
+      productId: product._id,
+      address,
+      email,
+      phone,
+      orderStatus: "ORDER PLACED",
+      amountToBePaid: product.price,
+      alreadyPaid: false,
+      size: selectedSize,
+      userId
+    };
+
+    console.log(orderDetails)
+    try {
+      await createOrder(orderDetails);
+      
+      alert("Order placed successfully!");
+      setShowAddressModal(false);
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Failed to place the order.");
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
 
   const handleAddToCart = () => {
     if (selectedSize) {
@@ -262,65 +325,111 @@ const ProductDetails: React.FC = () => {
             </div>
 
             {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-6 rounded-md w-96">
-              <h2 className="text-lg font-semibold mb-4">Add a Review</h2>
-              
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Rating</label>
-                <div className="flex gap-2">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <FaStar
-                      key={i}
-                      className={`h-6 w-6 cursor-pointer ${
-                        i < newReview.rating ? 'text-yellow-500' : 'text-gray-300'
-                      }`}
-                      onClick={() => setNewReview({ ...newReview, rating: i + 1 })}
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-md w-96">
+                  <h2 className="text-lg font-semibold mb-4">Add a Review</h2>
+
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Rating</label>
+                    <div className="flex gap-2">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className={`h-6 w-6 cursor-pointer ${i < newReview.rating ? 'text-yellow-500' : 'text-gray-300'
+                            }`}
+                          onClick={() => setNewReview({ ...newReview, rating: i + 1 })}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={newReview.title}
+                      maxLength={50}
+                      onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
+                      className="w-full border rounded-md px-3 py-2"
                     />
-                  ))}
+                    <p className="text-xs text-gray-500">{newReview.title.length}/50</p>
+                  </div>
+
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium mb-1">Description</label>
+                    <textarea
+                      value={newReview.description}
+                      maxLength={300}
+                      onChange={(e) => setNewReview({ ...newReview, description: e.target.value })}
+                      className="w-full border rounded-md px-3 py-2"
+                    ></textarea>
+                    <p className="text-xs text-gray-500">{newReview.description.length}/300</p>
+                  </div>
+
+                  <div className="flex justify-end">
+                    <button
+                      onClick={handleAddReview}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
+                    >
+                      Submit Review
+                    </button>
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="ml-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
+            )}
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Title</label>
-                <input
-                  type="text"
-                  value={newReview.title}
-                  maxLength={50}
-                  onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
-                  className="w-full border rounded-md px-3 py-2"
-                />
-                <p className="text-xs text-gray-500">{newReview.title.length}/50</p>
-              </div>
-              
-              <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Description</label>
-                <textarea
-                  value={newReview.description}
-                  maxLength={300}
-                  onChange={(e) => setNewReview({ ...newReview, description: e.target.value })}
-                  className="w-full border rounded-md px-3 py-2"
-                ></textarea>
-                <p className="text-xs text-gray-500">{newReview.description.length}/300</p>
-              </div>
 
-              <div className="flex justify-end">
-                <button
-                  onClick={handleAddReview}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all"
-                >
-                  Submit Review
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="ml-2 px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all"
-                >
-                  Cancel
-                </button>
+
+            {showBuyNowModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-md w-96">
+                  <h2 className="text-lg font-semibold mb-4">Confirm Order</h2>
+                  <img src={product.imageUrl.split(',')[0]} alt={product.title} />
+                  <p className='text-xl font-bold'>{product.title}</p>
+                  <p className='text-xs text-gray-700'>{product.shortDescription}</p>
+                  <p>Size: {selectedSize}</p>
+                  <p className='font-bold text-lg'>INR {product.price.toFixed(2)}</p>
+                  <div className="flex justify-end gap-2">
+                    <button onClick={() => setShowBuyNowModal(false)} className='flex-1 py-2 px-4 poppins-semibold text-center bg-gray-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'>Cancel</button>
+                    <button onClick={handleContinue} className='flex-1 py-2 px-4 poppins-semibold text-center bg-orange-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'>Continue</button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )}
+            )}
+
+            {showAddressModal && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-md w-96">
+                  <h2 className="text-lg font-semibold mb-4">Enter Details</h2>
+                  <div className='grid  grid-cols-2 gap-2'>
+
+                  <input type="text" className='p-2 w-full border' placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value )} />
+                  <input type="text" className='p-2 w-full border' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value )} />
+                  <input type="text" className='p-2 w-full border  col-span-2' placeholder="Address Line 1" value={address.addressLine1} onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })} />
+                  <input type="text" className='p-2 w-full border  col-span-2' placeholder="Address Line 2" value={address.addressLine2} onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })} />
+                  <input type="text" className='p-2 w-full border' placeholder="City" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                  <input type="text" className='p-2 w-full border' placeholder="State" value={address.state} onChange={(e) => setAddress({ ...address, state: e.target.value })} />
+                  <input type="text" className='p-2 w-full border col-span-2' placeholder="Pin Code" value={address.pinCode} onChange={(e) => setAddress({ ...address, pinCode: e.target.value })} />
+                  </div>
+                  <div className="flex justify-end gap-2 mt-2">
+                    <button onClick={() => setShowAddressModal(false)} className='flex-1 py-2 px-4 poppins-semibold text-center bg-gray-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'>Cancel</button>
+                    <button onClick={handlePlaceOrder} className='flex-1 py-2 px-4 poppins-semibold text-center bg-orange-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'>Place Order</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
+
+
+
+
           </div>
         </div>
       </div>
