@@ -32,10 +32,23 @@ const PORT = process.env.PORT || 7000
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://updatefashion-1.onrender.com',
+  'https://update-fashion.vercel.app'
+];
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-  }));
+  origin: (origin, callback) => {
+    if (origin === undefined || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 
   app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 

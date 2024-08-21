@@ -26,8 +26,21 @@ app.use((0, cookie_parser_1.default)());
 const PORT = process.env.PORT || 7000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://updatefashion.onrender.com',
+    'https://update-fashion.vercel.app'
+];
 app.use((0, cors_1.default)({
-    origin: process.env.FRONTEND_URL,
+    origin: (origin, callback) => {
+        if (origin === undefined || allowedOrigins.includes(origin)) {
+            // Allow requests with no origin (like mobile apps or curl requests)
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../frontend/dist")));
