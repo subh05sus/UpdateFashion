@@ -42,7 +42,7 @@ router.post('/login', [
         const token = jsonwebtoken_1.default.sign({ useerId: user.id }, process.env.JWT_SECRET_KEY, {
             expiresIn: '1d',
         });
-        res.cookie("update_fashion_auth", token, {
+        res.cookie("auth_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 86400000,
@@ -63,7 +63,7 @@ router.get("/validate-token", auth_1.default, (req, res) => {
     }
 });
 router.post("/logout", (req, res) => {
-    res.cookie("update_fashion_auth", "", {
+    res.cookie("auth_token", "", {
         expires: new Date(0),
     });
     res.send();

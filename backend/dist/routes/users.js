@@ -47,7 +47,7 @@ router.post("/register", [
         const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
             expiresIn: "1d",
         });
-        res.cookie("update_fashion_auth", token, {
+        res.cookie("auth_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             maxAge: 86400000,
