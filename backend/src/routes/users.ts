@@ -3,6 +3,7 @@ import User from "../models/user";
 import jwt from "jsonwebtoken";
 import { check, validationResult } from "express-validator";
 import verifyToken from "../middleware/auth";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -67,6 +68,57 @@ router.get("/me", verifyToken, async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "something went wrong" });
+  }
+});
+
+// Add to Favorites
+// Add to Favorites
+router.post('/add-to-favorites/:productId', verifyToken, async (req: Request, res: Response) => {
+  try {
+      const user = await User.findById(req.userId);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+
+      const { productId } = req.params;
+      const productObjectId = new mongoose.Types.ObjectId(productId); // Convert to ObjectId
+
+      if (user.favorites.includes(productObjectId)) {
+          return res.status(400).json({ message: 'Product is already in favorites' });
+      }
+
+      user.favorites.push(productObjectId);
+      await user.save();
+      res.status(200).json({ message: 'Product added to favorites' });
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+// Remove from Favorites
+router.delete('/remove-from-favorites/:productId', verifyToken, async (req: Request, res: Response) => {
+  try {
+      const user = await User.findById(req.userId);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+
+      const { productId } = req.params;
+      user.favorites = user.favorites.filter(favId => favId.toString() !== productId);
+      await user.save();
+      res.status(200).json({ message: 'Product removed from favorites' });
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+router.get('/get-favorites', verifyToken, async (req, res) => {
+  try {
+      const user = await User.findById(req.userId).populate('favorites');
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json(user.favorites);
+  } catch (error) {
+      console.error('Error fetching user favorites:', error);
+      res.status(500).json({ message: 'Internal server error' });
   }
 });
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import PopupMenu from "./PopupMenu";
-import { BsCart } from "react-icons/bs";
+import { AiFillHeart } from "react-icons/ai";
 
 const Header = () => {
   const { isLoggedIn } = useAppContext();
@@ -27,8 +27,8 @@ const Header = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-6">
-                {isLoggedIn && <Link to="/" className="text-2xl flex gap-1 items-center text-black transition duration-200 rounded-full hover:text-orange-600 focus:text-orange-600">
-                  <BsCart /><span className="text-lg hidden lg:block"> Cart</span>
+                {isLoggedIn && <Link to="/favorites" className="text-2xl flex gap-1 items-center text-red-600 transition duration-200 rounded-full hover:text-orange-600 focus:text-orange-600">
+                  <AiFillHeart />
                 </Link>}
                 <PopupMenu isLoggedIn={isLoggedIn} />
               </div>

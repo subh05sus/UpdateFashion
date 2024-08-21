@@ -19,30 +19,43 @@ import ProductDetails from "./pages/ProductDetails";
 import MyOrdersPage from "./pages/MyOrdersPage";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import FavoritesPage from "./pages/FavoritesPage";
+import CategoryPage from "./pages/CategoryPage";
+import { useAppContext } from "./contexts/AppContext";
 
 function App() {
+  const { isLoggedIn, isAdmin } = useAppContext()
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Layout><HomePage/></Layout>} />
-        <Route path="/register" element={<Layout><Register/></Layout>} />
-        <Route path="/sign-in" element={<Layout><SignIn/></Layout>} />
+        <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/register" element={<Layout><Register /></Layout>} />
+        <Route path="/sign-in" element={<Layout><SignIn /></Layout>} />
 
-        <Route path="/sub-category/:subcategory" element={<Layout><SubCategoryPage/></Layout>} />
-        <Route path="/all-products" element={<Layout><AllProductsPage/></Layout>} />
-        <Route path="/product/:id" element={<Layout><ProductDetails/></Layout>} />
-        <Route path="/my-orders/" element={<Layout><MyOrdersPage/></Layout>} />
-        <Route path="/order-details/:id" element={<Layout><OrderDetailsPage/></Layout>} />
+        <Route path="/sub-category/:subcategory" element={<Layout><SubCategoryPage /></Layout>} />
+        <Route path="/category/:category" element={<Layout><CategoryPage /></Layout>} />
+        <Route path="/all-products" element={<Layout><AllProductsPage /></Layout>} />
+        <Route path="/product/:id" element={<Layout><ProductDetails /></Layout>} />
 
-        
+        {isLoggedIn &&
+          <>
+            <Route path="/favorites" element={<Layout><FavoritesPage /></Layout>} />
+            <Route path="/my-orders/" element={<Layout><MyOrdersPage /></Layout>} />
+            <Route path="/order-details/:id" element={<Layout><OrderDetailsPage /></Layout>} />
+          </>
 
-        <Route path="/admin" element={<Layout><AdminPanel/></Layout>} />
-        <Route path="/admin/add-product" element={<Layout><AdminAddProduct/></Layout>} />
-        <Route path="/admin/edit-product/:id" element={<Layout><AdminEditProduct/></Layout>} />
-        <Route path="/admin/all-products" element={<Layout><AdminProductList/></Layout>} />
-        <Route path="/admin/manage-banners" element={<Layout><AdminBannersPage/></Layout>} />
-        <Route path="/admin/manage-orders" element={<Layout><AdminOrdersPage/></Layout>} />
+        }
+        {
+          isAdmin && <>
+            <Route path="/admin" element={<Layout><AdminPanel /></Layout>} />
+            <Route path="/admin/add-product" element={<Layout><AdminAddProduct /></Layout>} />
+            <Route path="/admin/edit-product/:id" element={<Layout><AdminEditProduct /></Layout>} />
+            <Route path="/admin/all-products" element={<Layout><AdminProductList /></Layout>} />
+            <Route path="/admin/manage-banners" element={<Layout><AdminBannersPage /></Layout>} />
+            <Route path="/admin/manage-orders" element={<Layout><AdminOrdersPage /></Layout>} />
 
+          </>
+        }
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

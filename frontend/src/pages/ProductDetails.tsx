@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getProductById, getReviewsByProductId, addReview, createOrder } from '../api-client';
+import { Link, useParams } from 'react-router-dom';
+import { getProductById, getReviewsByProductId, addReview, createOrder, addToFavorites, getFavorites, removeFromFavorites } from '../api-client';
 import { FaStar } from 'react-icons/fa';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { BiCart } from 'react-icons/bi';
+import { BiHeart } from 'react-icons/bi';
 import { useAppContext } from '../contexts/AppContext';
+import { AiFillHeart } from 'react-icons/ai';
 
 interface Spec {
   key: string;
@@ -55,7 +56,7 @@ const ProductDetails: React.FC = () => {
     description: ''
   });
 
-  const {userId} = useAppContext()
+  const {userId, isLoggedIn} = useAppContext()
 
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -69,6 +70,7 @@ const ProductDetails: React.FC = () => {
     state: '',
     pinCode: '',
   });
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -83,8 +85,13 @@ const ProductDetails: React.FC = () => {
         if (reviewsData.length > 0) {
           const avgRating = reviewsData.reduce((acc: number, review: Review) => acc + review.rating, 0) / reviewsData.length;
           setAverageRating(avgRating);
-          console.log('Average Rating:', avgRating);
         }
+
+        const favorites = await getFavorites();
+        const isFav = favorites.some((fav: Product) => fav._id === id);
+        setIsFavorite(isFav);
+
+
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -148,15 +155,26 @@ const ProductDetails: React.FC = () => {
 
 
 
-
-  const handleAddToCart = () => {
-    if (selectedSize) {
-      console.log("Product ID:", id);
-      console.log("Selected Size:", selectedSize);
+  const handleToggleFavorite = async () => {
+    if (isFavorite) {
+      await removeFromFavorites(id!);
+      setIsFavorite(false);
     } else {
-      alert("Please select a size first.");
+      await addToFavorites(id!);
+      setIsFavorite(true);
     }
   };
+
+
+
+  // const handleAddToCart = () => {
+  //   if (selectedSize) {
+  //     console.log("Product ID:", id);
+  //     console.log("Selected Size:", selectedSize);
+  //   } else {
+  //     alert("Please select a size first.");
+  //   }
+  // };
 
   const handleAddReview = async () => {
     if (product) {
@@ -253,20 +271,33 @@ const ProductDetails: React.FC = () => {
             </div>
           )}
 
+            {isLoggedIn ?
           <div className='flex gap-3 mb-6 mt-4'>
             <div
               onClick={handleBuyNow}
-              className='flex-1 poppins-semibold text-center bg-orange-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'
+              className='flex-1 poppins-semibold text-center py-2 text-white bg-orange-600 items-center flex justify-center rounded-md hover:bg-slate-800 transition-all duration-200 cursor-pointer'
             >
               Buy Now
             </div>
             <div
-              onClick={handleAddToCart}
-              className='duration-200 transition-all flex flex-col items-center justify-center poppins-medium text-sm bg-slate-800 text-white px-4 py-2 hover:bg-slate-900  rounded-md cursor-pointer'
+              onClick={handleToggleFavorite}
+              className='duration-200 border transition-all flex flex-col items-center justify-center poppins-medium text-sm bg-neutral-100 text-red-600 px-4 py-2 hover:bg-slate-200  rounded-md cursor-pointer'
             >
-              <BiCart className='text-2xl' />Add To Cart
+              {isFavorite ? (
+                <>
+                  <AiFillHeart className="text-red-500 text-lg" />
+                </>
+              ) : (
+                <>
+                  <BiHeart className="text-lg" />
+                </>
+              )}
             </div>
           </div>
+           :
+           <Link to={`/sign-in`} className='mb-6 mt-4 poppins-semibold text-center py-2 text-white bg-orange-600 items-center flex justify-center rounded-md hover:bg-slate-800 transition-all duration-200'>
+            Login First
+           </Link> }
 
           <p className="text-base mb-4">{product.longDescription}</p>
 

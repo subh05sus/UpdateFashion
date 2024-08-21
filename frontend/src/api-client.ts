@@ -201,7 +201,7 @@ export const getProductsBySubCategory = async (subcategory: string) => {
     throw new Error("Failed to fetch products by subcategory");
   }
   return products;
-}; 
+};
 
 // --------------------------------------------------------- reviews
 
@@ -436,94 +436,144 @@ export const getRandomProducts = async () => {
   }
 };
 
-
-
 // -------------------------------------- orders
-export const createOrder = async (orderData:any) => {
+export const createOrder = async (orderData: any) => {
   const response = await fetch(`${API_BASE_URL}/api/orders/create`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-    credentials: 'include',  // if you need to send cookies with the request
+    credentials: "include", // if you need to send cookies with the request
     body: JSON.stringify(orderData),
   });
 
   const responseBody = await response.json();
 
   if (!response.ok) {
-    throw new Error(responseBody.message || 'Failed to create order');
+    throw new Error(responseBody.message || "Failed to create order");
   }
 
   return responseBody;
 };
 
-
-
-export const updateOrderStatus = async (orderId:any, orderStatus:any) => {
-  const response = await fetch(`${API_BASE_URL}/api/orders/update-status/${orderId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',  // if you need to send cookies with the request
-    body: JSON.stringify({ orderStatus }),
-  });
+export const updateOrderStatus = async (orderId: any, orderStatus: any) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/orders/update-status/${orderId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // if you need to send cookies with the request
+      body: JSON.stringify({ orderStatus }),
+    }
+  );
 
   const responseBody = await response.json();
 
   if (!response.ok) {
-    throw new Error(responseBody.message || 'Failed to update order status');
+    throw new Error(responseBody.message || "Failed to update order status");
   }
 
   return responseBody;
 };
 
-
-
 export const getAllOrders = async () => {
   const response = await fetch(`${API_BASE_URL}/api/orders/all`, {
-    credentials: 'include',  // if you need to send cookies with the request
+    credentials: "include", // if you need to send cookies with the request
   });
 
   const orders = await response.json();
 
   if (!response.ok) {
-    throw new Error('Failed to fetch orders');
+    throw new Error("Failed to fetch orders");
   }
 
   return orders;
 };
-
-
 
 export const getMyOrders = async () => {
   const response = await fetch(`${API_BASE_URL}/api/orders/get-my-orders`, {
-    credentials: 'include',  // if you need to send cookies with the request
+    credentials: "include", // if you need to send cookies with the request
   });
 
   const orders = await response.json();
 
   if (!response.ok) {
-    throw new Error('Failed to fetch orders');
+    throw new Error("Failed to fetch orders");
   }
 
   return orders;
 };
 
-
-
-
-export const getOrderById = async (orderId:string) => {
+export const getOrderById = async (orderId: string) => {
   const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`, {
-    credentials: 'include',  // if you need to send cookies with the request
+    credentials: "include", // if you need to send cookies with the request
   });
 
   const order = await response.json();
 
   if (!response.ok) {
-    throw new Error('Failed to fetch order');
+    throw new Error("Failed to fetch order");
   }
 
   return order;
+};
+
+// ---------------------------------favourites
+
+export const addToFavorites = async (productId: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/users/add-to-favorites/${productId}`, {
+    method: "POST",
+    credentials: "include", // Include cookies with the request
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message);
+  }
+
+  return await response.json();
+};
+
+export const removeFromFavorites = async (productId: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/users/remove-from-favorites/${productId}`,
+    {
+      method: "DELETE",
+      credentials: "include", // Include cookies with the request
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message);
+  }
+
+  return await response.json();
+};
+
+
+
+export const getFavorites = async () => {
+      const response = await fetch(`${API_BASE_URL}/api/users/get-favorites`, {
+          method: 'GET',
+          credentials: 'include', // Include cookies with the request
+          headers: {
+              'Content-Type': 'application/json',
+          },
+      });
+
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message);
+      }
+
+      return await response.json();
 };

@@ -6,8 +6,8 @@ export interface UserType extends Document {
     password: string;
     firstName: string;
     lastName: string;
-    orders: mongoose.Types.ObjectId[]; // Add orders field
-
+    orders: mongoose.Types.ObjectId[];
+    favorites: mongoose.Types.ObjectId[];
 }
 
 const userSchema: Schema<UserType> = new mongoose.Schema({
@@ -15,8 +15,8 @@ const userSchema: Schema<UserType> = new mongoose.Schema({
     password: { type: String, required: true },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order', default: [] }], // Add orders field
-
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order', default: [] }],
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product', default: [] }],
 });
 
 userSchema.pre<UserType>('save', async function (next) {
