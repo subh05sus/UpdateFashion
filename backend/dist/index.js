@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 7000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)({
-    origin: '*',
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../../frontend/dist")));
