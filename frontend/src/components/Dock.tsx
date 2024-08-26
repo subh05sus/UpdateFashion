@@ -1,78 +1,57 @@
 import {
-  IconBrandGithub,
-  IconBrandX,
-  IconExchange,
+    IconBrandFacebook,
+  IconBrandInstagram,
+  IconHeart,
   IconHome,
-  IconNewSection,
-  IconTerminal2,
+  IconShoppingBag,
 } from "@tabler/icons-react";
 import { FloatingDock } from "./ui/floating-dock";
 
-export function FloatingDockDemo() {
+export function HomeDock() {
   const links = [
     {
       title: "Home",
       icon: (
         <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "/",
     },
 
     {
       title: "Products",
       icon: (
-        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconShoppingBag className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "/all-products",
     },
     {
-      title: "Components",
+      title: "Favorites",
       icon: (
-        <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconHeart className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "/favorites",
     },
     {
-      title: "Aceternity UI",
+      title: "Instagram",
       icon: (
-        <img
-          src="https://assets.aceternity.com/logo-dark.png"
-          width={20}
-          height={20}
-          alt=""
-        />
+        <IconBrandInstagram className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "https://www.instagram.com/updatefashion.co/",
     },
     {
-      title: "Changelog",
+      title: "Facebook",
       icon: (
-        <IconExchange className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconBrandFacebook className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
-    },
-
-    {
-      title: "Twitter",
-      icon: (
-        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "GitHub",
-      icon: (
-        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
+      href: "https://www.facebook.com/updatefashion.co.in/",
     },
   ];
   return (
-    <div className="flex items-center justify-center h-[35rem] w-full">
+
+    // <div className="flex fixed z-[9999999]  bottom-6 items-center justify-center portrait:justify-end portrait:pr-6 portrait:items-end  w-full mx-auto">
       <FloatingDock
-        mobileClassName="translate-y-20" // only for demo, remove for production
         items={links}
-      />
-    </div>
+        />
+    // </div>
   );
 }

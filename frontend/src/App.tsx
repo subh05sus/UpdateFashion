@@ -23,15 +23,23 @@ import FavoritesPage from "./pages/FavoritesPage";
 import CategoryPage from "./pages/CategoryPage";
 import { useAppContext } from "./contexts/AppContext";
 import AdminHomePhotos from "./pages/AdminHomePhotos";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import ScrollToTop from "./ScrollToTop";
 
 function App() {
   const { isLoggedIn, isAdmin } = useAppContext()
   return (
     <Router>
+      <ScrollToTop />
+
       <Routes>
         <Route path="/" element={<Layout><HomePage /></Layout>} />
         <Route path="/register" element={<Layout><Register /></Layout>} />
         <Route path="/sign-in" element={<Layout><SignIn /></Layout>} />
+
+        <Route path="/privacy-policy" element={<Layout><PrivacyPolicy /></Layout>} />
+        <Route path="/terms-of-service" element={<Layout><TermsOfService /></Layout>} />
 
         <Route path="/sub-category/:subcategory" element={<Layout><SubCategoryPage /></Layout>} />
         <Route path="/category/:category" element={<Layout><CategoryPage /></Layout>} />
