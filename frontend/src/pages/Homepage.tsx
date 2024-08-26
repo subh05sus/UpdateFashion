@@ -4,6 +4,7 @@ import { getBanners } from "../api-client";
 import BannerCarousel from "../components/BannerCarousel";
 import ProductCarousel from "../components/ProductCarousel";
 import CategorySection from "../components/CategorySection";
+import HomePhotos from "../components/HomePhotos";
 
 const HomePage: React.FC = () => {
   const [banners, setBanners] = useState<any[]>([]);
@@ -26,6 +27,7 @@ const HomePage: React.FC = () => {
       <BannerCarousel banners={banners} />
     <ProductCarousel/>
     <CategorySection/>
+    <HomePhotos/>
     </div>
   );
 };

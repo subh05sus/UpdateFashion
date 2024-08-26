@@ -22,7 +22,7 @@ export function CategoryTabs() {
         fetchProducts();
     }, []);
 
-    const renderProducts = (products: any, link:string) => {
+    const renderProducts = (products: any, link: string) => {
         return (
             <div className="w-full overflow-scroll no-visible-scrollbar relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-slate-700 to-orange-950 flex flex-col items-center gap-3">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
@@ -43,31 +43,31 @@ export function CategoryTabs() {
         {
             title: "Men Clothing",
             value: "men",
-            content: renderProducts(menProducts,'/sub-category/men'),
+            content: renderProducts(menProducts, '/sub-category/men'),
             products: menProducts,
         },
         {
             title: "Women Clothing",
             value: "women",
-            content: renderProducts(womenProducts,'/sub-category/women'),
+            content: renderProducts(womenProducts, '/sub-category/women'),
             products: womenProducts,
         },
         {
             title: "Casual Footwear",
             value: "casual",
-            content: renderProducts(casualFootwearProducts,'/sub-category/casual'),
+            content: renderProducts(casualFootwearProducts, '/sub-category/casual'),
             products: casualFootwearProducts,
         },
         {
             title: "Formal Clothing",
             value: "formal",
-            content: renderProducts(formalClothingProducts,'/sub-category/formal'),
+            content: renderProducts(formalClothingProducts, '/sub-category/formal'),
             products: formalClothingProducts,
         },
         {
             title: "Random",
             value: "random",
-            content: renderProducts(randomProducts,'/all-products'),
+            content: renderProducts(randomProducts, '/all-products'),
             products: randomProducts,
         },
     ];
@@ -75,9 +75,11 @@ export function CategoryTabs() {
     const filteredTabs = tabs.filter(tab => tab.products && tab.products.length > 0);
 
     return (
-        <div className="h-[30rem] md:h-[28rem] px-2 relative flex flex-col max-w-5xl mx-auto w-full items-start justify-start mb-20">
-            {filteredTabs.length > 0 ? <Tabs tabs={filteredTabs} /> : <p>No categories to display</p>}
-        </div>
+
+            <div className="h-[30rem] md:h-[28rem] px-2 relative flex flex-col max-w-5xl mx-auto w-full items-start justify-start mb-20">
+                {filteredTabs.length > 0 ? <Tabs tabs={filteredTabs} /> : <p>No categories to display</p>}
+            </div>
+
     );
-    
+
 }

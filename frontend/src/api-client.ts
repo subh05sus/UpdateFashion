@@ -577,3 +577,53 @@ export const getFavorites = async () => {
 
       return await response.json();
 };
+
+
+
+
+// ---------------------------------homephoto
+
+export const addHomePhoto = async (imageUrl: string, text: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/home-photos`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+
+    body: JSON.stringify({ imageUrl, text }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message);
+  }
+
+  return response.json();
+};
+
+export const getHomePhotos = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/home-photos`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch home photos");
+  }
+
+  return response.json();
+};
+
+export const deleteHomePhoto = async (id: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/home-photos/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message);
+  }
+
+  return response.json();
+};

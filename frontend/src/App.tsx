@@ -22,6 +22,7 @@ import AdminOrdersPage from "./pages/AdminOrdersPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import CategoryPage from "./pages/CategoryPage";
 import { useAppContext } from "./contexts/AppContext";
+import AdminHomePhotos from "./pages/AdminHomePhotos";
 
 function App() {
   const { isLoggedIn, isAdmin } = useAppContext()
@@ -52,6 +53,7 @@ function App() {
             <Route path="/admin/edit-product/:id" element={<Layout><AdminEditProduct /></Layout>} />
             <Route path="/admin/all-products" element={<Layout><AdminProductList /></Layout>} />
             <Route path="/admin/manage-banners" element={<Layout><AdminBannersPage /></Layout>} />
+            <Route path="/admin/manage-home-photos" element={<Layout><AdminHomePhotos /></Layout>} />
             <Route path="/admin/manage-orders" element={<Layout><AdminOrdersPage /></Layout>} />
 
           </>
