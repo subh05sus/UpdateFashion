@@ -13,6 +13,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BorderBeam } from "./magicui/border-beam";
 import HyperText from "./magicui/hyper-text";
+import { isMobile } from "react-device-detect";
 
 
 const ProductCarousel: React.FC = () => {
@@ -69,7 +70,7 @@ const ProductCarousel: React.FC = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow: isMobile ? 2:5,
     slidesToScroll: 1,
 
     prevArrow: <LeftArrow />,
@@ -86,7 +87,7 @@ const ProductCarousel: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-6xl portrait:text-3xl font-bold mt-8 mb-4 text-left poppins-bold">Featured <span className="text-orange-600 hover:text-slate-200 duration-300 transition-all">Products</span></h2>
+      <h2 className="text-6xl portrait:text-3xl font-bold mt-8 mb-4 text-left poppins-bold">Featured <HyperText text="Products." className=" text-orange-600 poppins-bold"/></h2>
       <div className="bg-white">
         <Slider {...settings} className="w-full" centerPadding="30px">
           {featuredProducts.map((product) => (

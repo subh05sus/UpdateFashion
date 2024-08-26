@@ -75,7 +75,7 @@ export function CategoryTabs() {
     const filteredTabs = tabs.filter(tab => tab.products && tab.products.length > 0);
 
     return (
-        <div className="h-[30rem] md:h-[28rem] px-2 relative flex flex-col max-w-5xl mx-auto w-full items-start justify-start mb-40">
+        <div className="h-[30rem] md:h-[28rem] px-2 relative flex flex-col max-w-5xl mx-auto w-full items-start justify-start mb-20">
             {filteredTabs.length > 0 ? <Tabs tabs={filteredTabs} /> : <p>No categories to display</p>}
         </div>
     );
