@@ -21,7 +21,7 @@ function HomePhotos() {
         fetchHomePhotos();
     }, []);
     return (
-        <div className="pt-10">
+        <div className="pt-10 px-3">
             <div className="flex justify-center">
 
                 <HyperText className="text-center poppins-bold  text-4xl mb-3 " text={"Gallery"} />

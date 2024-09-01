@@ -42,7 +42,7 @@ const FloatingDockMobile = ({
 }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={cn("relative block md:hidden", className)}>
+    <div className={cn("relative block md:hidden fixed right-4 bottom-4 ", className)}>
       <AnimatePresence>
         {open && (
           <motion.div
@@ -80,9 +80,9 @@ const FloatingDockMobile = ({
       </AnimatePresence>
       <button
         onClick={() => setOpen(!open)}
-        className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-800 flex items-center justify-center"
+        className="h-10 w-10 rounded-full bg-gray-50 flex items-center justify-center"
       >
-        <img src="update.png" alt="" className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+        <img src="update.png" alt="" className="h-5 w-5 text-neutral-500 " />
       </button>
     </div>
   );

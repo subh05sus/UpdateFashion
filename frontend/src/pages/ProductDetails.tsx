@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { BiHeart } from 'react-icons/bi';
 import { useAppContext } from '../contexts/AppContext';
 import { AiFillHeart } from 'react-icons/ai';
+import { Lens } from '../components/ui/lens';
 
 interface Spec {
   key: string;
@@ -56,7 +57,7 @@ const ProductDetails: React.FC = () => {
     description: ''
   });
 
-  const {userId, isLoggedIn} = useAppContext()
+  const { userId, isLoggedIn } = useAppContext()
 
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -72,6 +73,7 @@ const ProductDetails: React.FC = () => {
   });
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
+  const [hoverStates, setHoverStates] = useState<boolean[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,7 +138,7 @@ const ProductDetails: React.FC = () => {
     console.log(orderDetails)
     try {
       await createOrder(orderDetails);
-      
+
       alert("Order placed successfully!");
       setShowAddressModal(false);
     } catch (error) {
@@ -205,13 +207,24 @@ const ProductDetails: React.FC = () => {
     nextArrow: <></>,
     prevArrow: <></>,
   };
-
+  // Function to handle hovering state changes
+  const handleHover = (index: number, isHovering: boolean) => {
+    const newHoverStates = [...hoverStates];
+    newHoverStates[index] = isHovering;
+    setHoverStates(newHoverStates);
+  };
   return (
     <div className="p-6 bg-white rounded-md shadow-md">
       <div className="flex flex-col lg:flex-row">
         <div className="lg:w-1/2 grid grid-cols-2 gap-2 portrait:hidden">
-          {product.imageUrl.split(',').map((imageUrl, index) => (
-            <img key={index} src={imageUrl} alt={product.title} className="w-full h-96 object-cover rounded-lg border" />
+        {product?.imageUrl.split(',').map((imageUrl, index) => (
+            <Lens
+              key={index}
+              hovering={hoverStates[index]}
+              setHovering={(isHovering: boolean) => handleHover(index, isHovering)}
+            >
+              <img src={imageUrl} alt={product.title} className="w-full h-96 object-cover rounded-lg border" />
+            </Lens>
           ))}
         </div>
         <div className="lg:w-1/2 lg:pl-6">
@@ -271,33 +284,33 @@ const ProductDetails: React.FC = () => {
             </div>
           )}
 
-            {isLoggedIn ?
-          <div className='flex gap-3 mb-6 mt-4'>
-            <div
-              onClick={handleBuyNow}
-              className='flex-1 poppins-semibold text-center py-2 text-white bg-orange-600 items-center flex justify-center rounded-md hover:bg-slate-800 transition-all duration-200 cursor-pointer'
-            >
-              Buy Now
+          {isLoggedIn ?
+            <div className='flex gap-3 mb-6 mt-4'>
+              <div
+                onClick={handleBuyNow}
+                className='flex-1 poppins-semibold text-center py-2 text-white bg-orange-600 items-center flex justify-center rounded-md hover:bg-slate-800 transition-all duration-200 cursor-pointer'
+              >
+                Buy Now
+              </div>
+              <div
+                onClick={handleToggleFavorite}
+                className='duration-200 border transition-all flex flex-col items-center justify-center poppins-medium text-sm bg-neutral-100 text-red-600 px-4 py-2 hover:bg-slate-200  rounded-md cursor-pointer'
+              >
+                {isFavorite ? (
+                  <>
+                    <AiFillHeart className="text-red-500 text-lg" />
+                  </>
+                ) : (
+                  <>
+                    <BiHeart className="text-lg" />
+                  </>
+                )}
+              </div>
             </div>
-            <div
-              onClick={handleToggleFavorite}
-              className='duration-200 border transition-all flex flex-col items-center justify-center poppins-medium text-sm bg-neutral-100 text-red-600 px-4 py-2 hover:bg-slate-200  rounded-md cursor-pointer'
-            >
-              {isFavorite ? (
-                <>
-                  <AiFillHeart className="text-red-500 text-lg" />
-                </>
-              ) : (
-                <>
-                  <BiHeart className="text-lg" />
-                </>
-              )}
-            </div>
-          </div>
-           :
-           <Link to={`/sign-in`} className='mb-6 mt-4 poppins-semibold text-center py-2 text-white bg-orange-600 items-center flex justify-center rounded-md hover:bg-slate-800 transition-all duration-200'>
-            Login First
-           </Link> }
+            :
+            <Link to={`/sign-in`} className='mb-6 mt-4 poppins-semibold text-center py-2 text-white bg-orange-600 items-center flex justify-center rounded-md hover:bg-slate-800 transition-all duration-200'>
+              Login First
+            </Link>}
 
           <p className="text-base mb-4">{product.longDescription}</p>
 
@@ -440,13 +453,13 @@ const ProductDetails: React.FC = () => {
                   <h2 className="text-lg font-semibold mb-4">Enter Details</h2>
                   <div className='grid  grid-cols-2 gap-2'>
 
-                  <input type="text" className='p-2 w-full border' placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value )} />
-                  <input type="text" className='p-2 w-full border' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value )} />
-                  <input type="text" className='p-2 w-full border  col-span-2' placeholder="Address Line 1" value={address.addressLine1} onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })} />
-                  <input type="text" className='p-2 w-full border  col-span-2' placeholder="Address Line 2" value={address.addressLine2} onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })} />
-                  <input type="text" className='p-2 w-full border' placeholder="City" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
-                  <input type="text" className='p-2 w-full border' placeholder="State" value={address.state} onChange={(e) => setAddress({ ...address, state: e.target.value })} />
-                  <input type="text" className='p-2 w-full border col-span-2' placeholder="Pin Code" value={address.pinCode} onChange={(e) => setAddress({ ...address, pinCode: e.target.value })} />
+                    <input type="text" className='p-2 w-full border' placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <input type="text" className='p-2 w-full border' placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="text" className='p-2 w-full border  col-span-2' placeholder="Address Line 1" value={address.addressLine1} onChange={(e) => setAddress({ ...address, addressLine1: e.target.value })} />
+                    <input type="text" className='p-2 w-full border  col-span-2' placeholder="Address Line 2" value={address.addressLine2} onChange={(e) => setAddress({ ...address, addressLine2: e.target.value })} />
+                    <input type="text" className='p-2 w-full border' placeholder="City" value={address.city} onChange={(e) => setAddress({ ...address, city: e.target.value })} />
+                    <input type="text" className='p-2 w-full border' placeholder="State" value={address.state} onChange={(e) => setAddress({ ...address, state: e.target.value })} />
+                    <input type="text" className='p-2 w-full border col-span-2' placeholder="Pin Code" value={address.pinCode} onChange={(e) => setAddress({ ...address, pinCode: e.target.value })} />
                   </div>
                   <div className="flex justify-end gap-2 mt-2">
                     <button onClick={() => setShowAddressModal(false)} className='flex-1 py-2 px-4 poppins-semibold text-center bg-gray-600 items-center flex justify-center rounded-md hover:text-white hover:bg-slate-800 transition-all duration-200 cursor-pointer'>Cancel</button>
