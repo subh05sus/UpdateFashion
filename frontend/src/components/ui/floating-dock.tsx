@@ -104,6 +104,7 @@ const FloatingDockDesktop = ({
         "mx-auto hidden md:flex h-16 gap-4 items-end  shadow-xl fixed self-center snap-center bottom-6 z-[9999999]  border rounded-2xl bg-gray-50 dark:bg-neutral-900 px-4 pb-3",
         className
       )}
+      style={{ backdropFilter: "blur(5px)", backgroundColor: "rgba(255, 255, 255, 0.7)" }}
     >
       {items.map((item) => (
         <IconContainer mouseX={mouseX} key={item.title} {...item} />

@@ -26,7 +26,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({ banners }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-h-[40rem]">
       <Slider {...settings} className="w-full">
         {banners.map((banner) => (
           <Link key={banner._id} to={banner.link}>
