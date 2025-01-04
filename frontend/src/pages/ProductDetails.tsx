@@ -448,7 +448,7 @@ const ProductDetails: React.FC = () => {
             )}
 
             {showAddressModal && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="fixed inset-0 bg-black bg-opacity-50  z-[999999] flex items-center justify-center">
                 <div className="bg-white p-6 rounded-md w-96">
                   <h2 className="text-lg font-semibold mb-4">Enter Details</h2>
                   <div className='grid  grid-cols-2 gap-2'>
