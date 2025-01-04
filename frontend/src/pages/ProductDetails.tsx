@@ -369,7 +369,7 @@ const ProductDetails: React.FC = () => {
             </div>
 
             {showModal && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center z-[999999] justify-center">
                 <div className="bg-white p-6 rounded-md w-96">
                   <h2 className="text-lg font-semibold mb-4">Add a Review</h2>
 
@@ -431,7 +431,7 @@ const ProductDetails: React.FC = () => {
 
 
             {showBuyNowModal && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="fixed inset-0 bg-black bg-opacity-50 z-[999999] flex items-center justify-center">
                 <div className="bg-white p-6 rounded-md w-96">
                   <h2 className="text-lg font-semibold mb-4">Confirm Order</h2>
                   <img src={product.imageUrl.split(',')[0]} alt={product.title} />
