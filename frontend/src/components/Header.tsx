@@ -12,7 +12,7 @@ const Header = () => {
         <nav className="flex items-center justify-between h-16 lg:h-20 bg-white border-b border-gray-200">
           <div className="flex-shrink-0">
             <Link to="/" title="" className="flex items-center">
-              <img className="w-auto h-8 lg:h-10" src="update.png" alt="Logo" />
+              <img className="w-auto h-8 lg:h-10" src="/update.png" alt="Logo" />
               <span className="mt-1 -ml-1 text-xl md:text-xl lg:text-3xl font-bold poppins-semibold text-[#282828]">
                 pdate <span className="text-orange-600">Fashion</span>
               </span>
