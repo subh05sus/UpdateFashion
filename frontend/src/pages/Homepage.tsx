@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
 
       <div className="mt-10">
         <VelocityScroll
-          text="Update Fashion "
+          text="UPD Nation "
           default_velocity={5}
           className="font-display  text-center text-4xl font-bold tracking-[-0.02em] text-black drop-shadow-sm dark:text-white md:text-7xl my-0"
         />

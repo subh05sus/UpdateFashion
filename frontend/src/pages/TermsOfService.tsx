@@ -6,7 +6,7 @@ const TermsOfService: React.FC = () => {
       <h1 className="text-4xl font-bold text-orange-600 mb-6">Terms of Service</h1>
 
       <p className="mb-4">
-        Welcome to <strong>Update Fashion</strong>. These Terms of Service ("Terms") govern your use of our website and services. By accessing or using our website, you agree to comply with these Terms.
+        Welcome to <strong>UPD Nation</strong>. These Terms of Service ("Terms") govern your use of our website and services. By accessing or using our website, you agree to comply with these Terms.
       </p>
 
       <h2 className="text-2xl font-semibold text-orange-500 mb-4">1. Acceptance of Terms</h2>
@@ -46,7 +46,7 @@ const TermsOfService: React.FC = () => {
 
       <h2 className="text-2xl font-semibold text-orange-500 mb-4">7. Intellectual Property</h2>
       <p className="mb-6">
-        All content on our website, including text, graphics, logos, images, and software, is the property of <strong>Update Fashion</strong> and is protected by intellectual property laws. You may not use any content from our website without our prior written permission.
+        All content on our website, including text, graphics, logos, images, and software, is the property of <strong>UPD Nation</strong> and is protected by intellectual property laws. You may not use any content from our website without our prior written permission.
       </p>
 
       <h2 className="text-2xl font-semibold text-orange-500 mb-4">8. Limitation of Liability</h2>

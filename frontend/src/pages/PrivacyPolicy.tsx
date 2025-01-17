@@ -5,7 +5,7 @@ const PrivacyPolicy: React.FC = () => {
     <div className="p-6 font-sans text-gray-700  max-w-6xl mx-auto">
       <h1 className="text-4xl font-bold text-orange-600 mb-6">Privacy Policy</h1>
       <p className="mb-4">
-        Welcome to <strong>Update Fashion</strong>. We respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy outlines how we collect, use, and safeguard your information when you visit our website or make a purchase.
+        Welcome to <strong>UPD Nation</strong>. We respect your privacy and are committed to protecting the personal information you share with us. This Privacy Policy outlines how we collect, use, and safeguard your information when you visit our website or make a purchase.
       </p>
 
       <h2 className="text-2xl font-semibold text-orange-500 mb-4">1. Information We Collect</h2>
