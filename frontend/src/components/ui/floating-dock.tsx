@@ -82,7 +82,7 @@ const FloatingDockMobile = ({
         onClick={() => setOpen(!open)}
         className="h-10 w-10 rounded-full bg-gray-50 flex items-center justify-center"
       >
-        <img src="update.png" alt="" className="h-5 w-5 text-neutral-500 " />
+        <img src="logo.png" alt="" className="h-5 w-5 text-neutral-500 " />
       </button>
     </div>
   );
